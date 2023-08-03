@@ -1,0 +1,54 @@
+easyblock = 'CMakeMake'
+
+name = 'Chrono'
+version = '8.0.0'
+
+homepage = 'https://projectchrono.org/'
+description = """Chrono is a physics-based modelling and simulation infrastructure based on a platform-independent open-source design implemented in C++."""
+
+toolchain = {'name': 'intel', 'version': '2021b'}
+toolchainopts = {'pic': True}
+
+# No direct download. It requires a registration:
+# https://old.opencascade.com/content/latest-release
+
+source_urls = ['https://github.com/projectchrono/chrono/archive/refs/tags']
+sources = ['%(version)s.tar.gz']
+checksums = ['02219133c149d5d88f66ea58857a112dea9e3fcf682053f58ff8981337406f28']
+
+builddependencies = [('CMake', '3.22.1')]
+
+dependencies = [
+    ('irrlicht', '1.8.5'),
+    ('SWIG', '4.0.2'),
+    ('Eigen', '3.4.0'),
+    ('matplotlib', '3.4.3'),
+    ('blaze', '3.8.1'),
+    ('CUDA', '12.0.0', '', SYSTEM),
+    ('freeglut', '3.2.1'),
+    ('gnuplot', '5.4.2'),
+]
+
+separate_build_dir = True
+
+configopts  = '-DBUILD_DEMOS=ON '
+configopts += '-DBUILD_BENCHMARKING=ON '
+configopts += '-DENABLE_MODULE_PARDISO_MKL=ON '
+configopts += '-DENABLE_MODULE_IRRLICHT=ON '
+configopts += '-DENABLE_MODULE_DISTRIBUTED=ON '
+configopts += '-DENABLE_MODULE_MULTICORE=ON '
+configopts += '-DENABLE_MODULE_POSTPROCESS=ON '
+configopts += '-DENABLE_OPENMP=OFF '
+#configopts += '-DIOMP5_LIBRARY=$EBROOTINTELMINCOMPILERS/compiler/$EBVERSIONINTELMINCOMPILERS/linux/compiler/lib/intel64_lin/libiomp5.so '
+#configopts += '-DMATH_LIBRARY=$EBROOTINTELMINCOMPILERS/compiler/$EBVERSIONINTELMINCOMPILERS/linux/lib/oclfpga/board/intel_a10gx_pac/linux64/lib/libintel_opae_mmd.so '
+configopts += '-DPYCHRONO_DATA_PATH=%(installdir)s/data '
+configopts += '-DENABLE_MODULE_PYTHON=ON '
+
+sanity_check_paths = {
+    'files':[],
+    'dirs': ['include', 'lib/cmake', 'share'],
+}
+
+modextrapaths = {'PYTHONPATH': 'share/chrono/python'}
+
+moduleclass = 'cae'

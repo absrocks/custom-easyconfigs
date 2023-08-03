@@ -14,7 +14,7 @@ patches = [
 	('Siesta-master-4.1.5-intel-makefiles.patch', 1),
 ]
 checksums = [
-    '94cf904dbab8db2bfd22a8907e2aebc3681d9b5d11ac4ea6926a0f39ebf51fa1',  # siesta-master-4.1.5.tar.gz
+    '4324f8d1f1ce790a7d7d4b6294fc48552945cf0edac9d73f21e74ed9d5e326d1',  # siesta-master-4.1.5.tar.gz
     'ba1ced3948baa96cc2a3bb5a1d071a0ac653718aee44ef5c14b8d857cce86cfc',  # Siesta-master-4.1.5-intel-makefiles.patch
 ]
 
@@ -26,8 +26,6 @@ dependencies = [
     ('libpsml','1.1.10'),
     ('libGridXC','0.9.6'),
 ]
-
-preconfigopts = 'chmod +x %(builddir)s/Src/obj_setup.sh && '
 
 # transiesta is now siesta --electrode
 with_transiesta = False
