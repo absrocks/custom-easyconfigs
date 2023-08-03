@@ -1,0 +1,22 @@
+easyblock = 'PythonPackage'
+
+name = 'bitarray'
+version = '2.6.0'
+versionsuffix = '-Python-%(pyver)s'
+
+homepage = 'https://github.com/ilanschnell/bitarray'
+description = "bitarray provides an object type which efficiently represents an array of booleans"
+
+toolchain = {'name': 'foss', 'version': '2021b'}
+
+sources = [SOURCE_TAR_GZ]
+checksums = ['56d3f16dd807b1c56732a244ce071c135ee973d3edc9929418c1b24c5439a0fd']
+
+dependencies = [('Python', '3.9.6')]
+
+download_dep_fail = True
+use_pip = True
+
+sanity_pip_check = True
+
+moduleclass = 'data'

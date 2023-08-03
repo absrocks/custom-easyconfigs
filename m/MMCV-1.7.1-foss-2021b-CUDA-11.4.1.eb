@@ -1,0 +1,56 @@
+easyblock = 'PythonBundle'
+
+name = 'mmcv-full'
+version = '1.7.1'
+versionsuffix = '-CUDA-%(cudaver)s'
+
+homepage = 'https://mmcv.readthedocs.io/en/latest'
+description = "MMCV is a foundational library for computer vision research and supports many research projects"
+
+toolchain = {'name': 'foss', 'version': '2021b'}
+
+
+dependencies = [
+    ('Python', '3.9.6'),
+    ('PyTorch', '1.11.0', '-CUDA-%(cudaver)s'),
+    ('SciPy-bundle', '2021.10'),
+    ('CUDA', '11.4.1', '', True),
+    ('OpenCV', '4.5.5', '-contrib'),
+]
+
+
+use_pip = True
+
+# avoid that matplotlib downloads and builds its own copies of freetype and qhull
+#_fix_setup = "sed -e 's/#system_freetype = False/system_freetype = True/g' "
+#_fix_setup += "-e 's/#system_qhull = False/system_qhull = True/g' setup.cfg.template >setup.cfg && "
+
+exts_list = [
+    ('yapf', '0.32.0', {
+        'sources': ['%(name)s-%(version)s.tar.gz'],
+ 	'checksums': [
+ 	'a3f5085d37ef7e3e004c4ba9f9b3e40c54ff1901cd111f05145ae313a7c67d1b',
+ 	],
+    }),
+    ('addict', '2.4.0', {
+        'sources': ['%(name)s-%(version)s.tar.gz'],
+        'checksums': [
+        'b3b2210e0e067a281f5646c8c5db92e99b7231ea8b0eb5f74dbdf9e259d4e494',
+ 	],
+    }),	   
+     (name, version, {
+     	'preinstallopts': "MMCV_WITH_OPS=1 && ",
+        'sources': ['%(name)s-%(version)s.tar.gz'],
+	'modulename': 'mmcv',
+	'checksums': [
+	'83eb5e9b3adc31e63f201df4e13d4f5d68bc67fceb7b42c90e592790b1bdf228',
+	],
+    }),
+]
+
+
+sanity_check_commands = ["python -c 'import mmcv'"]
+
+sanity_pip_check = True
+
+moduleclass = 'devel'

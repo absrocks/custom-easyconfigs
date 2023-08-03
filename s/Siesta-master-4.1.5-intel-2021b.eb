@@ -1,0 +1,35 @@
+name = 'Siesta'
+version = 'master-4.1.5'
+
+homepage = 'http://departments.icmab.es/leem/siesta'
+description = """SIESTA is both a method and its computer program implementation, to perform efficient electronic
+ structure calculations and ab initio molecular dynamics simulations of molecules and solids."""
+
+toolchain = {'name': 'intel', 'version': '2021b'}
+toolchainopts = {'usempi': True, 'precise': True}
+
+source_urls = ['https://gitlab.com/siesta-project/siesta/-/archive/master']
+sources = [SOURCELOWER_TAR_GZ]
+patches = [
+	('Siesta-master-4.1.5-intel-makefiles.patch', 1),
+]
+checksums = [
+    '4324f8d1f1ce790a7d7d4b6294fc48552945cf0edac9d73f21e74ed9d5e326d1',  # siesta-master-4.1.5.tar.gz
+    'ba1ced3948baa96cc2a3bb5a1d071a0ac653718aee44ef5c14b8d857cce86cfc',  # Siesta-master-4.1.5-intel-makefiles.patch
+]
+
+dependencies = [
+    ('netCDF-Fortran', '4.5.3'),
+    ('METIS', '5.1.0'),
+    ('ELPA', '2021.11.001'),
+    ('xmlf90','1.5.4'),
+    ('libpsml','1.1.10'),
+    ('libGridXC','0.9.6'),
+]
+
+# transiesta is now siesta --electrode
+with_transiesta = False
+
+runtest = 'check'
+
+moduleclass = 'phys'

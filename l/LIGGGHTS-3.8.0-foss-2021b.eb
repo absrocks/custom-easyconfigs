@@ -1,0 +1,86 @@
+easyblock = 'CMakeMake'
+
+name = 'LIGGGHTS-PUBLIC'
+version = '3.8.0'
+
+homepage = 'http://www.liggghts.com'
+description = """LIGGGHTS is an open source Discrete Element Method (DEM) software"""
+
+toolchain = {'name': 'foss', 'version': '2021b'}
+toolchainopts = {'pic': True}
+
+sources = [{
+    'git_config': {
+        'url': 'https://github.com/CFDEMproject',
+        'repo_name': 'LIGGGHTS-PUBLIC',
+	'commit': 'bbd23c8521fe0a4f3f5bfd0d3dc9a7dddd68d90b',	
+    },
+    'filename': SOURCE_TAR_GZ,
+}]
+checksums = ['c94c26b61be4acf5a837ad2c9fa9bade14678718c395dce0246cf00e090a57a9']
+
+versionsuffix = '-kokkos'
+_cuda_suffix = '-CUDA-%(cudaver)s'
+versionsuffix += _cuda_suffix
+
+builddependencies = [('CMake', '3.21.1')]
+dependencies = [
+    ('CUDA', '11.4.1', '', SYSTEM),
+    ('LAMMPS', '23Jun2022', versionsuffix),
+]
+
+separate_build_dir = True
+srcdir = '%(builddir)s/%(name)s/src'
+
+configopts  = '-DENABLE_GZIP=ON '
+configopts += '-DENABLE_JPEG=ON '
+
+configopts += '-DENABLE_MODEL_COHESION_EASO_CAPILLARY_VISCOUS=ON '
+configopts += '-DENABLE_MODEL_COHESION_OFF=ON '
+configopts += '-DENABLE_MODEL_COHESION_SJKR=ON '
+configopts += '-DENABLE_MODEL_COHESION_SJKR2=ON '
+configopts += '-DENABLE_MODEL_COHESION_WASHINO_CAPILLARY_VISCOUS=ON '
+
+configopts += '-DENABLE_MODEL_EDINBURGH=ON  '
+configopts += '-DENABLE_MODEL_EDINBURGH_STIFFNESS=ON '
+
+configopts += '-DENABLE_MODEL_HERTZ=ON '
+configopts += '-DENABLE_MODEL_HERTZ_STIFFNESS=ON '
+
+configopts += '-DENABLE_MODEL_HOOKE=ON '
+configopts += '-DENABLE_MODEL_HOOKE_HYSTERESIS=ON '
+configopts += '-DENABLE_MODEL_HOOKE_STIFFNESS=ON '
+
+configopts += '-DENABLE_MODEL_LUDING=ON '
+
+configopts += '-DENABLE_MODEL_ROLLING_CDT=ON '
+configopts += '-DENABLE_MODEL_ROLLING_EPSD=ON '
+configopts += '-DENABLE_MODEL_ROLLING_EPSD2=ON '
+configopts += '-DENABLE_MODEL_ROLLING_EPSD3=ON '
+configopts += '-DENABLE_MODEL_ROLLING_LUDING=ON '
+configopts += '-DENABLE_MODEL_ROLLING_OFF=ON '
+
+configopts += '-DENABLE_MODEL_SURFACE_DEFAULT=ON '
+configopts += '-DENABLE_MODEL_SURFACE_MULTICONTACT=ON '
+configopts += '-DENABLE_MODEL_SURFACE_SUPERQUADRIC=ON '
+
+configopts += '-DENABLE_MODEL_TANGENTIAL_HISTORY=ON '
+configopts += '-DENABLE_MODEL_TANGENTIAL_LUDING=ON '
+configopts += '-DENABLE_MODEL_TANGENTIAL_NO_HISTORY=ON'
+configopts += '-DENABLE_MODEL_TANGENTIAL_OFF=ON '
+
+configopts += '-DENABLE_MODEL_THORNTON_NING=ON '
+
+configopts += '-DENABLE_MPI=ON '
+configopts += '-DENABLE_PNG=ON '
+configopts += '-DENABLE_SMALLBIG=ON '
+configopts += '-DENABLE_VTK=ON '
+
+
+sanity_check_paths = {
+    'files':['bin/liggghts', 'lib/libliggghts.so'],
+    'dirs': ['include'],
+}
+
+
+moduleclass = 'phys'

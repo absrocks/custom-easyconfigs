@@ -1,0 +1,32 @@
+easyblock = 'CMakeMake'
+
+name = 'blaze'
+version = '3.8.1'
+
+homepage = 'https://www.opencascade.com/open-cascade-technology/'
+description = """Blaze is an open-source, high-performance C++ math library for dense and sparse arithmetic. With its state-of-the-art Smart Expression Template implementation Blaze combines the elegance and ease of use of a domain-specific language with HPC-grade performance, making it one of the most intuitive and fastest C++ math libraries available"""
+
+toolchain = {'name': 'intel', 'version': '2021b'}
+
+source_urls = ['https://bitbucket.org/blaze-lib/blaze/downloads/']
+sources = ['%(namelower)s-%(version)s.tar.gz']
+
+checksums = [
+    'a084c6d1acc75e742a1cdcddf93d0cda0d9e3cc4014c246d997a064fa2196d39', # opencascade-7.7.0.tgz
+]
+builddependencies = [('CMake', '3.21.1')]
+
+separate_build_dir = True
+
+configopts  = '-DBLAZE_BLAS_MODE=ON '
+configopts += '-DBLAZE_BLAS_IS_PARALLEL=ON '
+configopts += '-DBLAZE_BLAS_IS_64BIT=ON '
+configopts += '-DUSE_LAPACK=ON '
+
+
+sanity_check_paths = {
+    'files': ['include/blaze/Blaze.h'],
+    'dirs': ['include', 'share'],
+}
+
+moduleclass = 'numlib'
