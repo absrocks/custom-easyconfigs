@@ -1,0 +1,40 @@
+# Copyright:: Copyright 2012-2014 Uni.Lu/LCSB, NTUA
+# Authors::   Fotis Georgatos <fotis@cern.ch>
+# License::   MIT/GPL
+# $Id$
+#
+# This work implements a part of the HPCBIOS project and is a component of the policy:
+# http://hpcbios.readthedocs.org/en/latest/HPCBIOS_2012-90.html
+##
+
+easyblock = 'Binary'
+
+name = 'RIP-MD'
+version = 'master'
+
+homepage = 'https://github.com/DLab/RIP-MD'
+description = """RIP-MD generates RINs for static protein structures or from MD trajectory files.
+The non-covalent interactions defined by RIP-MD include Hydrogen bonds, Salt bridges, Van der Waals contacts, cation-π, π-π, Arginine-Arginine and Coulomb interactions."""
+
+toolchain = {'name': 'foss', 'version': '2021b'}
+
+source_urls = ['https://github.com/DLab/RIP-MD/archive/']
+sources = ['%(version)s.tar.gz']
+checksums = ['cd263e06ca4c8559319246178d2afd0f4bb1d6fa80978aa0a69d9e98f7f48d2d']
+
+dependencies = [
+    ('Python', '3.9.6'),
+    ('MDAnalysis', '2.0.0'),
+    ('matplotlib', '3.4.3'),
+]
+
+install_cmd = "tar xfvz %(version)s.tar.gz --directory %(builddir)s/ --strip-components=1 && "
+install_cmd += "2to3 -w RIP-MD/main.py && 2to3 -w RIP-MD/libs/*.py && rm -rf RIP-MD/*.bak && rm -rf RIP-MD/libs/*.bak && "
+install_cmd += "cp -r RIP-MD/* %(installdir)s"
+
+sanity_check_paths = {
+    'files': ['main.py'],
+    'dirs': ['dat','libs']
+}
+
+moduleclass = 'bio'
