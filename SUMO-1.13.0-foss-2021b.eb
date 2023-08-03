@@ -1,0 +1,61 @@
+easyblock = 'CMakeMake'
+
+name = 'SUMO'
+version = '1.13.0'
+
+homepage = 'https://sumo.dlr.de/'
+description = """
+"Simulation of Urban MObility" (SUMO) is an open source, highly portable, microscopic and continuous traffic simulation
+package designed to handle large networks. It allows for intermodal simulation including pedestrians and comes with a
+large set of tools for scenario creation.
+"""
+
+toolchain = {'name': 'foss', 'version': '2021b'}
+
+source_urls = ['https://sumo.dlr.de/releases/%(version)s/']
+sources = ['sumo-src-%(version)s.tar.gz']
+checksums = ['71bfc0162a0bf77eeec962d7c851d87e6a148c5040cb1d0ba6715936363897af']
+
+builddependencies = [
+    ('CMake', '3.22.1'),
+    ('SWIG', '4.0.2'),
+    ('Maven/3.6.3',EXTERNAL_MODULE),
+]
+
+dependencies = [
+    ('Python', '3.9.6'),
+    ('Xerces-C++', '3.2.3'),
+    ('GL2PS', '1.4.2'),
+    ('GDAL', '3.3.2'),
+    ('PROJ', '8.1.0'),
+    ('libfox', '1.6.57'),
+    ('Eigen', '3.4.0'),
+    ('Java', '17.0.2',),
+    ('FFmpeg', '4.3.2'),
+    ('X11', '20210802'),
+    ('OpenSceneGraph', '3.6.5'),
+
+]
+
+separate_build_dir = True
+
+modextrapaths = {
+    'PYTHONPATH': 'lib/python%(pyshortver)s/site-packages',
+    'SUMO_HOME': 'share/sumo',
+}
+
+local_bins = ['activitygen', 'dfrouter', 'duarouter', 'emissionsDrivingCycle', 'emissionsMap', 'jtrrouter',
+              'marouter', 'netconvert', 'netgenerate', 'od2trips', 'polyconvert', 'sumo']
+
+sanity_check_paths = {
+    'files': ['bin/%s' % x for x in local_bins] +
+             ['lib/python%%(pyshortver)s/site-packages/libsumo/_libsumo.%s' % SHLIB_EXT],
+    'dirs': ['bin', 'lib', 'share'],
+}
+
+sanity_check_commands = [
+    'sumo --help',
+    "python -c 'import libsumo'",
+]
+
+moduleclass = 'data'

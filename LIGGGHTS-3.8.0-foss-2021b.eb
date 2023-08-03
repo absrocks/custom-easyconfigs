@@ -13,11 +13,11 @@ sources = [{
     'git_config': {
         'url': 'https://github.com/CFDEMproject',
         'repo_name': 'LIGGGHTS-PUBLIC',
-        'commit': 'bbd23c8521fe0a4f3f5bfd0d3dc9a7dddd68d90b',
+	'commit': 'bbd23c8521fe0a4f3f5bfd0d3dc9a7dddd68d90b',	
     },
     'filename': SOURCE_TAR_GZ,
 }]
-checksums = ['1f50c6ce47699834d811a457e628aa6772828d4b822b3fad4c7c294ab25da9c6']
+checksums = ['c94c26b61be4acf5a837ad2c9fa9bade14678718c395dce0246cf00e090a57a9']
 
 versionsuffix = '-kokkos'
 _cuda_suffix = '-CUDA-%(cudaver)s'
@@ -79,7 +79,7 @@ configopts += '-DENABLE_VTK=ON '
 
 sanity_check_paths = {
     'files':['bin/liggghts', 'lib/libliggghts.so'],
-        'dirs': ['include'],
+    'dirs': ['include'],
 }
 
 

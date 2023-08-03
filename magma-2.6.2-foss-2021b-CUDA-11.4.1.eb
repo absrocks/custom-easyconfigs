@@ -25,7 +25,7 @@ builddependencies = [
 ]
 
 dependencies = [
-    ('CUDA', '11.4.1', '', SYSTEM),
+    ('CUDA', '11.4.1', '', True),
 ]
 
 # default CUDA compute capabilities to use (override via --cuda-compute-capabilities)

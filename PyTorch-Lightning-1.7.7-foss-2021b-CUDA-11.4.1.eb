@@ -1,0 +1,40 @@
+easyblock = 'PythonBundle'
+
+name = 'PyTorch-Lightning'
+version = '1.7.7'
+versionsuffix = '-CUDA-%(cudaver)s'
+
+homepage = 'https://pytorchlightning.ai'
+description = "PyTorch Lightning is the lightweight PyTorch wrapper for ML researchers."
+
+toolchain = {'name': 'foss', 'version': '2021b'}
+
+dependencies = [
+    ('CUDA', '11.4.1', '', True),
+    ('Python', '3.9.6'),
+    ('PyTorch', '1.11.0', versionsuffix),
+    ('tqdm', '4.62.3'),
+    ('tensorboard', '2.11.0'),
+    ('torchvision', '0.12.0', versionsuffix),
+]
+
+exts_list = [
+    ('fsspec', '2022.11.0', {
+        'checksums': ['259d5fd5c8e756ff2ea72f42e7613c32667dc2049a4ac3d84364a7ca034acb8b'],
+    }),
+    ('pyDeprecate', '0.3.2', {
+        'modulename': 'deprecate',
+        'checksums': ['d481116cc5d7f6c473e7c4be820efdd9b90a16b594b350276e9e66a6cb5bdd29'],
+    }),
+    ('torchmetrics', '0.11.0', {
+        'checksums': ['c838e0491d80775daadd0802e27ae3af112a52086c9ba8cbcd1e2807243c89ac'],
+    }),
+    ('pytorch-lightning', version, {
+        'checksums': ['27c2dd01a18db2415168e3fa3775ccb5a1fa1e2961a50439ad9365507fe9d4ae'],
+    }),
+]
+
+use_pip = True
+sanity_pip_check = True
+
+moduleclass = 'lib'
