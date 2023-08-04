@@ -1,0 +1,76 @@
+From: A Mukherjee <am2455@njit.edu>
+Date: Fri, Oct 08 2022 21:07:30 -0400
+Subject: [PATCH] Add intel make file
+diff --git a/Obj/intel.make b/Obj/intel.make
+new file mode 100644
+index 0000000..bb7dcbd
+--- /dev/null
++++ b/Obj/intel.make
+@@ -0,0 +1,67 @@
++# 
++# Copyright (C) 1996-2016	The SIESTA group
++#  This file is distributed under the terms of the
++#  GNU General Public License: see COPYING in the top directory
++#  or http://www.gnu.org/copyleft/gpl.txt.
++# See Docs/Contributors.txt for a list of contributors.
++#
++#-------------------------------------------------------------------
++# arch.make file for gfortran compiler.
++# To use this arch.make file you should rename it to
++#   arch.make
++# or make a sym-link.
++# For an explanation of the flags see DOCUMENTED-TEMPLATE.make
++
++#.SUFFIXES:
++#.SUFFIXES: .f .F .o .c .a .f90 .F90
++SIESTA_ARCH = intel
++WITH_MPI=1
++XMLF90_ROOT=
++PSML_ROOT=
++GRIDXC_ROOT=
++WITH_METIS=1
++CC = icc
++FC_PARALLEL = mpiifort
++WITH_NETCDF=1
++WITH_NCDF=1
++
++FPP = $(FC_PARALLEL) -E -P -x -c
++FFLAGS = -fPIC -O2 -fp-model precise
++FC = ifort
++AR = ar
++FC_SERIAL = ifort
++SYS = nag
++NETCDF_ROOT=
++ELPA_ROOT=
++SP_KIND = 4
++DP_KIND = 8
++KINDS = $(SP_KIND) $(DP_KIND)
++
++LDFLAGS = 
++
++COMP_LIBS =  libsiestaLAPACK.a libsiestaBLAS.a
++
++FPPFLAGS = $(DEFS_PREFIX)-DFC_HAVE_ABORT
++
++LIBS = 
++SCALAPACK_LIBS=-L$(MKLROOT)/lib/intel64 -lmkl_scalapack_lp64 -lmkl_blacs_intelmpi_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core
++LAPACK_LIBS=-L$(MKLROOT)/lib/intel64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core
++# Dependency rules ---------
++
++#FFLAGS_DEBUG = -g -O1 -fp-model source   # your appropriate flags here...
++FFLAGS_DEBUG = -g -traceback -O1 -prec-div -prec-sqrt -fp-model source
++# The atom.f code is very vulnerable. Particularly the Intel compiler
++# will make an erroneous compilation of atom.f with high optimization
++# levels.
++atom.o: atom.F
++	$(FC) -c $(FFLAGS_DEBUG) $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS_fixed_F) $<
++state_analysis.o: state_analysis.F
++	$(FC) -c $(FFLAGS_DEBUG) $(INCFLAGS) $(FPPFLAGS) $(FPPFLAGS_fixed_F) $<
++create_Sparsity_SC.o: create_Sparsity_SC.F90
++	$(FC) -c $(FFLAGS_DEBUG) $(INCFLAGS) $(FPPFLAGS)  $<
++
++
++RANLIB=echo
++# ----------------------------------------------------------
++SELF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
++include $(SELF_DIR)build.mk
