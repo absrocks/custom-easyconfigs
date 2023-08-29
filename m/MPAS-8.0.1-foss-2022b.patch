@@ -1,0 +1,82 @@
+--- Makefile.orig	2023-08-29 12:57:30.359235000 -0400
++++ Makefile	2023-08-29 12:57:45.464451000 -0400
+@@ -397,8 +397,8 @@
+ 	"LDFLAGS_DEBUG = -g" \
+ 	"FFLAGS_OMP = -fopenmp" \
+ 	"CFLAGS_OMP = -fopenmp" \
+-	"FFLAGS_ACC =" \
+-	"CFLAGS_ACC =" \
++	"FFLAGS_ACC =-fopenacc" \
++	"CFLAGS_ACC =-fopenacc" \
+ 	"PICFLAG = -fPIC" \
+ 	"BUILD_TARGET = $(@)" \
+ 	"CORE = $(CORE)" \
+@@ -709,46 +709,47 @@
+ 	FCINCLUDES += -I$(PWD)/src/external/SMIOL
+ endif
+ 
+-ifneq "$(NETCDF)" ""
+-ifneq ($(wildcard $(NETCDF)/lib), )
++ifneq "$(EBROOTNETCDF)" ""
++ifneq ($(wildcard $(EBROOTNETCDF)/lib), )
+ 	NETCDFLIBLOC = lib
+ endif
+-ifneq ($(wildcard $(NETCDF)/lib64), )
++ifneq ($(wildcard $(EBROOTNETCDF)/lib64), )
+ 	NETCDFLIBLOC = lib64
+ endif
+-	CPPINCLUDES += -I$(NETCDF)/include
+-	FCINCLUDES += -I$(NETCDF)/include
+-	LIBS += -L$(NETCDF)/$(NETCDFLIBLOC)
++	CPPINCLUDES += -I$(EBROOTNETCDF)/include
++	FCINCLUDES += -I$(EBROOTNETCDF)/include
++	LIBS += -L$(EBROOTNETCDF)/$(NETCDFLIBLOC)
+ 	NCLIB = -lnetcdf
+ 	NCLIBF = -lnetcdff
+-	ifneq ($(wildcard $(NETCDF)/$(NETCDFLIBLOC)/libnetcdff.*), ) # CHECK FOR NETCDF4
++	ifneq ($(wildcard $(EBROOTNETCDF)/$(NETCDFLIBLOC)/libnetcdff.*), ) # CHECK FOR NETCDF4
+ 		LIBS += $(NCLIBF)
+-	endif # CHECK FOR NETCDF4
+-	ifneq "$(NETCDFF)" ""
+-		FCINCLUDES += -I$(NETCDFF)/include
+-		LIBS += -L$(NETCDFF)/$(NETCDFLIBLOC)
++	endif # CHECK FOR EBROOTNETCDF4
++	ifneq "$(EBROOTNETCDFF)" ""
++		FCINCLUDES += -I$(EBROOTNETCDFF)/include
++		LIBS += -L$(EBROOTNETCDFF)/$(NETCDFLIBLOC)
+ 		LIBS += $(NCLIBF)
+ 	endif
+ 	LIBS += $(NCLIB)
+ endif
+ 
+ 
+-ifneq "$(PNETCDF)" ""
+-ifneq ($(wildcard $(PNETCDF)/lib), )
++ifneq "$(EBROOTPNETCDF)" ""
++ifneq ($(wildcard $(PEBROOTPNETCDF)/lib), )
+ 	PNETCDFLIBLOC = lib
+ endif
+-ifneq ($(wildcard $(PNETCDF)/lib64), )
++ifneq ($(wildcard $(EBROOTPNETCDF)/lib64), )
+ 	PNETCDFLIBLOC = lib64
+ endif
+-	CPPINCLUDES += -I$(PNETCDF)/include
+-	FCINCLUDES += -I$(PNETCDF)/include
+-	LIBS += -L$(PNETCDF)/$(PNETCDFLIBLOC) -lpnetcdf
++	CPPINCLUDES += -I$(EBROOTPNETCDF)/include
++	FCINCLUDES += -I$(EBROOTPNETCDF)/include
++	LIBS += -L$(EBROOTPNETCDF)/$(PNETCDFLIBLOC) -lpnetcdf
+ endif
+ 
+-ifneq "$(LAPACK)" ""
+-        LIBS += -L$(LAPACK)
+-        LIBS += -llapack
+-        LIBS += -lblas
++ifneq "$(EBROOTSCALAPACK)" ""
++        LIBS += -L$(EBROOTSCALAPACK)
++        LIBS += -lscalapack
++	LIBS += -L$(EBROOTFLEXIBLAS)
++        LIBS += -lflexiblas
+ endif
+ 
+ RM = rm -f
