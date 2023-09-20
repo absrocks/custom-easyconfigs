@@ -8,7 +8,7 @@ description = """S-Lang is a multi-platform programmer's library designed to all
  required by interactive applications such as display/screen management, keyboard
  input, keymaps, and so on."""
 
-toolchain = {'name': 'GCCcore', 'version': '11.2.0'}
+toolchain = {'name': 'GCC', 'version': '11.2.0'}
 
 source_urls = ['http://www.jedsoft.org/releases/slang/']
 sources = ['slang-%(version)s.tar.bz2']
