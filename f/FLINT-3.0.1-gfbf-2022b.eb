@@ -1,0 +1,43 @@
+easyblock = 'CMakeMake'
+
+name = 'FLINT'
+version = '3.0.1'
+
+homepage = 'https://www.flintlib.org/'
+
+description = """FLINT (Fast Library for Number Theory) is a C library in support of computations
+ in number theory. Operations that can be performed include conversions, arithmetic, computing GCDs,
+ factoring, solving linear systems, and evaluating special functions. In addition, FLINT provides
+ various low-level routines for fast arithmetic. FLINT is extensively documented and tested."""
+
+toolchain = {'name': 'gfbf', 'version': '2022b'}
+toolchainopts = {'pic': True}
+
+source_urls = ['https://www.flintlib.org']
+sources = [SOURCELOWER_TAR_GZ]
+
+checksums = [
+    {'flint-3.0.1.tar.gz': '7b311a00503a863881eb8177dbeb84322f29399f3d7d72f3b1a4c9ba1d5794b4'},
+]
+
+builddependencies = [
+    ('CMake', '3.24.3'),
+    ('Python', '3.10.8'),
+]
+
+dependencies = [
+    ('GMP', '6.2.1'),
+    ('MPFR', '4.2.0'),
+    ('NTL', '11.5.1'),
+]
+
+configopts = '-DWITH_NTL=on -DBUILD_TESTING=yes'
+
+runtest = 'test'
+
+sanity_check_paths = {
+    'files': ['lib/lib%%(namelower)s.%s' % SHLIB_EXT],
+    'dirs': ['include'],
+}
+
+moduleclass = 'math'
