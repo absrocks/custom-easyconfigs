@@ -16,7 +16,7 @@ dependencies = [
     ('HDF5', '1.14.0'),
 ]
 
-#group = ("sw_vasp","You must be a member of a group licensed to use VASP. Contact hpc@njit.edu for assistance")
+group = ("sw_vasp","You must be a member of a group licensed to use VASP. Contact hpc@njit.edu for assistance")
 
 source_urls = ['https://github.com/henniggroup/VASPsol/archive/', 'http://theory.cm.utexas.edu/code/vtstscripts_old', 'http://theory.cm.utexas.edu/code/']
 sources = ['%(namelower)s.%(version)s.tgz']
@@ -29,8 +29,6 @@ checksums = [
 # Vasp is proprietary software, see http://www.vasp.at/index.php/faqs on how to get access to the code
 prebuildopts = 'cp arch/makefile.include.intel ./makefile.include && '
 prebuildopts += 'unset LIBS && '
-
-#configopts += "-Dcustom_libraries='flexiblas' "
 
 parallel = 1
 

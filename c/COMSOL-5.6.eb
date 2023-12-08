@@ -19,5 +19,5 @@ sources = ["comsol.tar.gz"]
 checksums = [None]
 
 # license is required, can be specified via $LMCOMSOL_LICENSE_FILE
-license_file = '/home/am2455/custom-easyconfigs/c/License.dat'
+license_file = '/home/userapps/custom-config-github/custom-easyconfigs/c/License.dat'
 moduleclass = 'phys'
