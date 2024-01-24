@@ -23,18 +23,22 @@ dependencies = [
 
 parallel = 1
 
+prebuildopts = 'make gfortran CORE=init_atmosphere OPENACC=true && '
+prebuildopts += 'make clean CORE=atmosphere && '
 buildopts = 'gfortran CORE=atmosphere OPENACC=true'
 
 files_to_copy = [(['atmosphere_model'], 'bin'),
+	      	 (['init_atmosphere_model'], 'bin'),
 	      	 (['build_tables'], 'bin'),
 		 (['*DATA*'], 'bin'),
 		 (['stream*'], 'bin'),
+		 (['src/core_init_atmosphere/libdycore.a'], 'lib'),
 		 (['src/core_atmosphere/libdycore.a'], 'lib'),
 		 (['src/core_atmosphere/libphys/*'], 'lib'),
 ]
 
 sanity_check_paths = {
-    'files': ['bin/atmosphere_model'],
+    'files': ['bin/atmosphere_model', 'bin/init_atmosphere_model'],
     'dirs': [],
 }
 
