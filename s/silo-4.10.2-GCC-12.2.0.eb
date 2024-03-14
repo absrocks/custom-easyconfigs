@@ -1,0 +1,36 @@
+easyblock = 'ConfigureMake'
+
+name = 'silo'
+version = '4.10.2'
+
+homepage = 'http://software.llnl.gov/Silo'
+
+description = """
+ Silo is a library for reading and writing a wide variety of scientific data to binary, files
+"""
+
+toolchain = {'name': 'GCC', 'version': '12.2.0'}
+toolchainopts = {'pic': True}
+
+#source_urls = ['https://github.com/chapel-lang/chapel/releases/download/%(version)s/']
+sources = ['%(name)s-%(version)s.tar']
+checksums = ['0f44f5a4362fefa145e5e944bfba72ea5001ea58441b19f1471bcd2692494caf']
+
+#builddependencies = [
+#    ('CMake', '3.24.3'),
+#]
+
+dependencies = [
+    ('Qt5', '5.15.7'),
+]
+
+
+configopts = '--with-Qt-bin-dir=$EBROOTQT5 '
+
+
+sanity_check_paths = {
+    'files': ['bin/silofile'],
+    'dirs': ['lib'],
+}
+
+moduleclass = 'data'
