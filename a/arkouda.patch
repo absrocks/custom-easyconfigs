@@ -1,0 +1,29 @@
+rom: A Mukherjee <am2455@njit.edu>
+Date: Tue, Mar 12 2024 21:07:30 -0400
+diff --git a/Makefile b/Makefile
+--- a/Makefile	2024-03-12 23:05:21.962624000 -0400
++++ b/Makefile	2024-03-11 21:20:08.505158039 -0400
+@@ -188,12 +188,12 @@
+ endif
+ check-deps: $(CHECK_DEPS)
+ 
+-SANITIZER = $(shell $(CHPL_HOME)/util/chplenv/chpl_sanitizers.py --exe 2>/dev/null)
++SANITIZER = $(shell $(EBROOTCHAPEL)/share/chapel/1.33/util/chplenv/chpl_sanitizers.py --exe 2>/dev/null)
+ ifneq ($(SANITIZER),none)
+ ARROW_SANITIZE=-fsanitize=$(SANITIZER)
+ endif
+ 
+-CHPL_CXX = $(shell $(CHPL_HOME)/util/config/compileline --compile-c++ 2>/dev/null)
++CHPL_CXX = $(shell $(EBROOTCHAPEL)/share/chapel/1.33/util/config/compileline --compile-c++ 2>/dev/null)
+ ifeq ($(CHPL_CXX),)
+ CHPL_CXX=$(CXX)
+ endif
+@@ -342,7 +342,7 @@
+ 
+ .PHONY: tags
+ tags:
+-	-@(cd $(ARKOUDA_SOURCE_DIR) && $(CHPL_HOME)/util/chpltags -r . > /dev/null \
++	-@(cd $(ARKOUDA_SOURCE_DIR) && $(EBROOTCHAPEL)/share/chapel/1.33/util/chpltags -r . > /dev/null \
+ 		&& echo "Updated $(ARKOUDA_SOURCE_DIR)/TAGS" \
+ 		|| echo "Tags utility not available.  Skipping tags generation.")
+ 

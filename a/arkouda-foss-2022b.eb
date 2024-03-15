@@ -1,0 +1,94 @@
+easyblock = 'MakeCp'
+
+name = 'arkouda'
+version = '2023.11.15'
+
+homepage = 'https://bears-r-us.github.io/arkouda/'
+description = "Interactive Data Analytics at Supercomputing Scale"
+
+toolchain = {'name': 'foss', 'version': '2022b'}
+
+source_urls = ['https://github.com/Bears-R-Us/%(name)s/archive/refs/tags/']
+sources = ['v%(version)s.tar.gz']
+patches = ['%(name)s.patch']
+checksums = [
+    {'v2023.11.15.tar.gz': 'd8ddc9ba52e99157362c20d6a066dcf1b23e489ebe17ebc68d59872cd7bb8345'},
+    {'arkouda.patch': '7c6c4ea8ebe99ffc168eb68b5ab066362bc9960a7a05e7c249ed9327d15f75cc'},
+]
+
+builddependencies = [
+    ('chapel', '1.33.0'),
+]
+
+dependencies = [
+    ('Python', '3.10.8'),
+    ('SciPy-bundle', '2023.02'),
+    ('Arrow', '11.0.0'),
+    ('HDF5', '1.14.0'),
+    ('libiconv', '1.17'),
+    ('libidn2', '2.3.2'),
+    ('matplotlib', '3.7.0'),
+    ('ZeroMQ', '4.3.4'),
+    ('cURL', '7.86.0'),
+]
+
+
+prebuildopts = 'export %s &&' % ' '.join([
+    'ARKOUDA_ZMQ_PATH=$EBROOTZEROMQ',
+    'ARKOUDA_HDF5_PATH=$HDF5_DIR',
+    'ARKOUDA_ARROW_PATH=$EBROOTARROW',
+    'ARKOUDA_ICONV_PATH=$EBROOTLIBICONV',
+    'ARKOUDA_IDN2_PATH=$EBROOTLIBIDN2',
+])
+
+parallel= 1
+
+files_to_copy = [
+    (['arkouda_server', 'arkouda_server_real'], 'bin'),
+    (['docs', 'example', 'LICENSE', 'README.md'], 'share'),
+]
+
+exts_defaultclass = 'PythonPackage'
+exts_default_options = {
+    'source_urls': [PYPI_SOURCE],
+    'download_dep_fail': True,
+    'use_pip': True,
+    'sanity_pip_check': True,
+}
+
+
+exts_list = [
+    ('ndindex', '1.7', {
+        'checksums': ['bf9bd0b76eeada1c8275e04091f8291869ed2b373b7af48e56faf7579fd2efd2'],
+    }),
+    ('pyfiglet', '1.0.2', {
+        'checksums': ['758788018ab8faaddc0984e1ea05ff330d3c64be663c513cc1f105f6a3066dab'],
+    }),
+    ('tzdata', '2023.3', {
+        'checksums': ['11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a'],
+    }),
+    ('typeguard', '2.2.0', {
+        'sources': ['%(name)s-%(version)s.tar.gz'],
+        'checksums': ['e588ff78b7093fc31c3b00c78db09b9b3764157b03b867f25ccd1dd3efd96ffb'],
+    }),
+    
+]
+
+sanity_check_paths = {
+    'files': ['bin/arkouda_server'],
+    'dirs': ['lib'],
+}
+
+_py_site_packages = 'lib/python%(pyshortver)s/site-packages'
+
+files_to_copy = [
+	(['arkouda_server', 'arkouda_server_real'], 'bin'),
+	(['arkouda'], _py_site_packages)
+]
+
+
+sanity_check_commands = ["python -c 'import arkouda'"]
+
+modextrapaths = {'PYTHONPATH': _py_site_packages}
+
+moduleclass = 'data'
