@@ -30,6 +30,9 @@ dependencies = [
     ('matplotlib', '3.7.0'),
     ('ZeroMQ', '4.3.4'),
     ('cURL', '7.86.0'),
+    ('PyTables', '3.8.0'),
+    ('PyZMQ', '25.1.0'),
+    
 ]
 
 
