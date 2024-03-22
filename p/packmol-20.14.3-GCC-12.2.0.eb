@@ -1,0 +1,24 @@
+easyblock = 'MakeCp'
+
+name = 'packmol'
+version = '20.14.3'
+
+homepage = 'http://m3g.iqm.unicamp.br/packmol'
+description = "Packing Optimization for Molecular Dynamics Simulations"
+
+toolchain = {'name': 'GCC', 'version': '12.2.0'}
+
+source_urls = ['https://github.com/m3g/packmol/archive/']
+sources = ['v%(version)s.tar.gz']
+checksums = ['c70d8dff6f983adb854cf816df3d4a389b5cc724e70a2430b54793051eaaa4e9']
+
+buildopts = 'FORTRAN="$F90"'
+
+files_to_copy = [(['packmol'], 'bin'), 'AUTHORS', 'LICENSE']
+
+sanity_check_paths = {
+    'files': ['bin/packmol', 'AUTHORS', 'LICENSE'],
+    'dirs': [],
+}
+
+moduleclass = 'chem'
