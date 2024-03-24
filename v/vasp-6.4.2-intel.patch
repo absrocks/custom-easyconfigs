@@ -1,4 +1,4 @@
---- vasp.6.4.2/arch/makefile.include.intel.orig	2023-11-21 14:21:42.058381000 -0500
+-- vasp.6.4.2/arch/makefile.include.intel.orig	2023-11-21 14:21:42.058381000 -0500
 +++ vasp.6.4.2/arch/makefile.include.intel	2023-11-21 13:34:04.354404556 -0500
 @@ -48,21 +48,21 @@
  

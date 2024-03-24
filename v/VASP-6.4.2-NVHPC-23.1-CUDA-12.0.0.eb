@@ -13,32 +13,36 @@ has been implemented to the original version of vasp This version of vasp also s
 HDF5, Wannier90, Libbeef, Libxc, and DFTD4."""
 
 toolchain = {'name': 'NVHPC', 'version': '23.1-CUDA-12.0.0'}
+toolchainopts = {'openmp': True}
+
 dependencies = [
     ('FFTW', '3.3.10'),
 ]
 
 #group = ("sw_vasp","You must be a member of a group licensed to use VASP. Contact hpc@njit.edu for assistance")
 
-source_urls = ['https://github.com/henniggroup/VASPsol/archive/', 'http://theory.cm.utexas.edu/code/vtstscripts_old', 'http://theory.cm.utexas.edu/code/']
 sources = ['%(namelower)s.%(version)s.tgz']
-patches = ['%(namelower)s-%(version)s-nvhpc-23.1.patch']
+
 checksums = [
     {'vasp.6.4.2.tgz': 'b704637f7384673f91adfbc803edc5cc7fe736d9623453461f7cdc29b123410e'},
-    {'vasp-6.4.2-nvhpc-23.1.patch': 'b689c9b3a85dda642fe544a964aaa8b6798e4f4e6ef773978b341f3679c17234'},
 ]
 
 # Vasp is proprietary software, see http://www.vasp.at/index.php/faqs on how to get access to the code
-prebuildopts = 'cp arch/makefile.include.nvhpc_acc ./makefile.include && '
+prebuildopts = 'cp arch/makefile.include.nvhpc_omp_acc ./makefile.include && '
 prebuildopts += 'unset LIBS && '
 
+local_targets = ['std', 'gam', 'ncl']
 
-parallel = 1
+buildopts = '%s ' % ' '.join(local_targets)
+buildopts += 'FFTW_ROOT="${EBROOTFFTW}" '
+buildopts += 'DEPS=1 '  # required for VASP parallel builds
 
-files_to_copy = ["bin", (['src/lib/*'], 'lib'), (['src/fftlib/*'], 'fftlib'), (['src/parser/*'], 'parser')]
+
+files_to_copy = [(['bin/vasp_' + x for x in local_targets], 'bin')]
 
 sanity_check_paths = {
-    'files': ['bin/vasp_std', 'bin/vasp_gam', 'bin/vasp_ncl'], 
-    'dirs': ['lib', 'fftlib']
+    'files': ['bin/vasp_' + x for x in local_targets],
+    'dirs': []
 }
 
 
