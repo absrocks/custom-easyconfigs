@@ -1,0 +1,63 @@
+easyblock = 'ConfigureMake'
+
+name = 'chapel'
+version = '1.33.0'
+
+homepage = 'https://chapel-lang.org/'
+
+description = """
+ Chapel is a programming language designed for productive parallel computing at scale.
+"""
+
+toolchain = {'name': 'GCC', 'version': '12.2.0'}
+toolchainopts = {'pic': True}
+
+source_urls = ['https://github.com/chapel-lang/chapel/releases/download/%(version)s/']
+sources = [SOURCELOWER_TAR_GZ]
+checksums = ['9dfd9bbab3eb1acf10242db909ccf17c1b07634452ca6ba8b238e69788d82883']
+
+builddependencies = [
+    ('CMake', '3.24.3'),
+]
+
+dependencies = [
+    ('GMP', '6.2.1'),
+    ('Python', '3.10.8'),
+    ('ncurses', '6.3'),
+#    ('GASNet', '2023.9.0'), 
+]
+
+
+preconfigopts = 'export CHPL_LLVM=none && '
+preconfigopts += 'export CHPL_TARGET_CPU=none && '
+preconfigopts += 'export CHPL_HWLOC=system && '
+preconfigopts += 'export CHPL_COMM=gasnet && '
+preconfigopts += 'export CHPL_LAUNCHER=gasnetrun_ibv && '
+preconfigopts += 'export CHPL_COMM_SUBSTRATE=ibv && '
+preconfigopts += 'export CHPL_GASNET_SEGMENT=fast && '
+preconfigopts += 'export CHPL_GMP=system && '
+preconfigopts += 'export CHPL_TARGET_CPU=native && '
+
+postinstallcmds = ["cp -a %(builddir)s/%(name)s-%(version)s/util %(installdir)s/"]
+
+sanity_check_paths = {
+    'files': ['bin/chpl'],
+    'dirs': ['util'],
+}
+
+modextrapaths = {
+    'PYTHONPATH': 'lib',
+}
+
+files_to_copy = [
+	(['util/*'], 'util'),
+]
+
+modluafooter = """
+setenv("CHPL_HOME", root)
+setenv("CHPL_COMM", "gasnet")
+setenv("CHPL_LAUNCHER", "gasnetrun_ibv")
+setenv("CHPL_COMM_SUBSTRATE", "ibv")
+setenv("CHPL_GASNET_SEGMENT", "fast")
+"""
+moduleclass = 'lang'
