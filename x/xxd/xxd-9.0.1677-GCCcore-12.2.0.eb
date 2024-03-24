@@ -1,0 +1,37 @@
+# Last contribution from the NIHR Biomedical Research Centre
+# Guy's and St Thomas' NHS Foundation Trust and King's College London
+# uploaded by J. Sassmannshausen
+
+easyblock = 'MakeCp'
+
+name = 'xxd'
+version = '9.0.1677'
+
+homepage = 'https://www.vim.org'
+description = """xxd is part of the VIM package and this will only install xxd, not vim!
+xxd converts to/from hexdumps of binary files."""
+
+toolchain = {'name': 'GCCcore', 'version': '12.2.0'}
+
+source_urls = ['https://github.com/vim/vim/archive/refs/tags']
+sources = ['v%(version)s.tar.gz']
+checksums = ['c5750a1d47b514d60d59d9956e2953fb1673d1dd797bfec09c1bff721743e55c']
+
+builddependencies = [
+    ('binutils', '2.39'),
+]
+
+start_dir = 'src/xxd'
+
+files_to_copy = [
+    (['xxd'], 'bin'),
+]
+
+sanity_check_paths = {
+    'files': ['bin/xxd'],
+    'dirs': [],
+}
+
+sanity_check_commands = ["xxd -h 2>&1 | grep -A 4 '^Usage:'"]
+
+moduleclass = 'tools'
