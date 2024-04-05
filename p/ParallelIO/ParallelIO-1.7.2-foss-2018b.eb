@@ -1,0 +1,41 @@
+easyblock = 'ConfigureMake'
+
+name = 'ParallelIO'
+version = '1.7.2'
+
+homepage = 'https://github.com/NCAR/ParallelIO'
+description = """A high-level Parallel I/O Library for structured grid applications"""
+
+toolchain = {'name': 'foss', 'version': '2018b'}
+toolchainopts = {'usempi': True}
+
+
+sources = ['pio_%(version)s.tar.gz']
+checksums = ['5a419b485a60536ed7332c4074811aae584e9a95bdd92daabbcaa60a13acda12']
+
+#separate_build_dir = True
+
+dependencies = [
+    ('PnetCDF', '1.10.0'),
+    ('netCDF-Fortran', '4.4.4'),
+]
+
+preconfigopts = 'export MPIFC=mpif90 PNETCDF_PATH=$PNETCDF FC=mpifort && '
+preconfigopts += "cd pio && "
+#FCFLAGS=-fallow-argument-mismatch
+configopts = "--disable-netcdf"
+prebuildopts = preconfigopts
+preinstallopts = prebuildopts
+
+parallel = 1
+
+sanity_check_paths = {
+    'files': ['lib/libpio.a', 'include/pio.mod'],
+    'dirs': [],
+}
+
+modextravars = {
+    'PIO': '%(installdir)s'
+}
+
+moduleclass = 'data'

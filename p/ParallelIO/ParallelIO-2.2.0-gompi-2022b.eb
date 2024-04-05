@@ -1,0 +1,41 @@
+easyblock = 'CMakeMake'
+
+name = 'ParallelIO'
+version = '2.2.0'
+
+homepage = 'https://github.com/NCAR/ParallelIO'
+description = """A high-level Parallel I/O Library for structured grid applications"""
+
+toolchain = {'name': 'gompi', 'version': '2022b'}
+toolchainopts = {'usempi': True}
+
+source_urls = ['https://github.com/NCAR/ParallelIO/archive/']
+sources = ['pio%s.tar.gz' % '_'.join(version.split('.'))]
+checksums = ['26e41ab1bea1d22b7b9aa5d387a8fcab2af11f66243995f8f7395ff26e225d00']
+
+separate_build_dir = True
+
+dependencies = [
+    ('PnetCDF', '1.12.3'),
+    ('netCDF-Fortran', '4.6.0'),
+]
+
+builddependencies = [
+    ('CMake', '3.24.3'),
+#    ('pkgconf', '1.9.3'),
+#    ('Doxygen', '1.9.5'),
+]
+
+preconfigopts = "NETCDF_C=$EBROOTNETCDF NETCDF_F=$EBROOTNETCDFMINFORTRAN "
+configopts = "-DPIO_ENABLE_TIMING=OFF "
+
+sanity_check_paths = {
+    'files': ['lib/libpiof.a', 'include/pio.mod'],
+    'dirs': [],
+}
+
+modextravars = {
+    'PIO': '%(installdir)s'
+}
+
+moduleclass = 'data'
