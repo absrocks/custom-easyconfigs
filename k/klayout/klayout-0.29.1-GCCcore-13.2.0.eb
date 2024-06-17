@@ -1,0 +1,46 @@
+easyblock = 'MakeCp'
+
+name = 'klayout'
+version = '0.29.1'
+
+homepage = 'https://www.klayout.de/'
+description = """KLayout is a powerful open-source software tool commonly used for mask layout editing 
+and viewing in the field of microelectronics and photonics. 
+It primarily serves the purpose of designing integrated circuits (ICs), photonic devices, and other micro/nanostructures."""
+
+toolchain = {'name': 'GCCcore', 'version': '13.2.0'}
+
+source_urls = ['https://www.klayout.org/downloads/source']
+sources = [SOURCELOWER_TAR_BZ2]
+checksums = ['8643b1af35bacd42e11c7306b50c29957ab624dd40b5878af278cb7d1a756668']
+
+builddependencies = [
+    ('binutils', '2.40'),
+]
+
+dependencies = [
+    ('Qt5', '5.15.13'),
+    ('Python', '3.11.5'),
+    ('libgit2', '1.7.2'),
+    
+]
+
+prebuildopts = "./build.sh -j%(parallel)s && cd build-release && "
+
+
+files_to_copy = [
+    (['build-release/klayout', 'build-release/str*'], 'bin'),
+    (['build-release/lib*', 'build-release/pymod', 'build-release/*plugins'], 'lib'),
+]
+
+modextrapaths = {
+    'PYTHONPATH': 'lib/pymod',
+}
+
+sanity_check_paths = {
+    'files': ['lib/libklayout_tl.%s' % SHLIB_EXT],
+    'dirs': ['bin', 'lib'],
+}
+
+moduleclass = 'lib'
+
