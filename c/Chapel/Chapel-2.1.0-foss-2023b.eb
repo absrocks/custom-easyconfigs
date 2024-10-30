@@ -1,0 +1,66 @@
+easyblock = 'ConfigureMake'
+
+name = 'Chapel'
+version = '2.1.0'
+
+homepage = 'https://chapel-lang.org/'
+
+description = """
+ Chapel is a programming language designed for productive parallel computing at scale.
+"""
+
+toolchain = {'name': 'foss', 'version': '2023b'}
+toolchainopts = {'pic': True}
+
+
+source_urls = ['https://github.com/chapel-lang/chapel/archive/refs/tags']
+sources = ['%(version)s.tar.gz']
+checksums = ['8e164d9a9e705e6b816857e84833b0922ce0bde6a36a9f3a29734830aac168ef']
+
+builddependencies = [
+    ('CMake', '3.27.6'),
+]
+
+dependencies = [
+    ('GMP', '6.3.0'),
+    ('Python', '3.11.5'),
+    ('ncurses', '6.4'),
+]
+
+preconfigopts = 'export %s &&' % ' '.join([
+    'CHPL_LLVM=none',
+    'CHPL_HWLOC=system',
+    'CHPL_GMP=system',
+
+    'CHPL_COMM=gasnet',
+    'CHPL_LAUNCHER=gasnetrun_mpi',
+    'CHPL_COMM_SUBSTRATE=mpi',
+
+    'CHPL_GASNET_SEGMENT=fast',
+    'CHPL_GASNET_VERSION=1',
+
+])
+
+prebuildopts = preconfigopts
+preinstallopts = prebuildopts
+
+sanity_check_paths = {
+    'files': ['bin/chpl'],
+    'dirs': ['lib'],
+}
+
+modextrapaths = {
+    'PYTHONPATH': 'lib/%(name)s/1.33/third-party/chpl-venv/install/chpldeps',
+}
+
+modluafooter = """
+setenv("CHPL_COMM", "gasnet")
+setenv("CHPL_LAUNCHER", "gasnetrun_mpi")
+setenv("CHPL_COMM_SUBSTRATE", "mpi")
+setenv("CHPL_GASNET_SEGMENT", "fast")
+setenv("CHPL_GMP", "system")
+setenv("CHPL_HWLOC", "system")
+setenv("CHPL_GASNET_VERSION", "1")
+setenv("CHPL_LLVM", "none")
+"""
+moduleclass = 'lang'
