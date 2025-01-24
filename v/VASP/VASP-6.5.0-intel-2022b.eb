@@ -1,0 +1,42 @@
+easyblock = 'MakeCp'
+
+name = 'VASP'
+version = '6.5.0'
+
+homepage = 'http://www.vasp.at'
+description = """The Vienna Ab initio Simulation Package (VASP) is a computer program for atomic scale
+materials modelling, e.g. electronic structure calculations and quantum-mechanical molecular dynamics,
+based on Density Futional Theory (DFT). In this version VASPsol (https://github.com/henniggroup/VASPsol)
+and scripts and modules for calculating transition states, VTSTTools (http://theory.cm.utexas.edu/vtsttools/)
+has been implemented to the original version of vasp This version of vasp also supports 
+HDF5, Wannier90, Libbeef, Libxc, and DFTD4."""
+
+toolchain = {'name': 'intel', 'version': '2022b'}
+dependencies = [
+    ('HDF5', '1.14.0'),
+]
+
+group = ("sw_vasp","You are not authorized to use VASP 6.5.0. You must be a member of a group licensed to use VASP. Contact hpc@njit.edu for assistance")
+
+sources = ['%(namelower)s.%(version)s.tar']
+patches = ['%(namelower)s-6.5.0-intel.patch']
+checksums = [
+    {'vasp.6.5.0.tar': '87f5a5416633af20fa8ea63f3348db477d8fc378feab4f839a617fc0663875f9'},
+    {'vasp-6.5.0-intel.patch': 'cdf21dfe5b42a56a479767c7c41ed4068bacf2dc42c37c94bd986fc4c58be3c6'},
+]
+
+# Vasp is proprietary software, see http://www.vasp.at/index.php/faqs on how to get access to the code
+prebuildopts = 'cp arch/makefile.include.intel ./makefile.include && '
+prebuildopts += 'unset LIBS && '
+
+parallel = 1
+
+files_to_copy = ["bin", (['src/lib/*'], 'lib'), (['src/fftlib/*'], 'fftlib'), (['src/parser/*'], 'parser')]
+
+sanity_check_paths = {
+    'files': ['bin/vasp_std', 'bin/vasp_gam', 'bin/vasp_ncl'], 
+    'dirs': ['lib', 'fftlib']
+}
+
+
+moduleclass = 'phys'

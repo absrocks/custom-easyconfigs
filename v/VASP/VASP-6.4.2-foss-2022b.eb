@@ -1,0 +1,47 @@
+easyblock = 'MakeCp'
+
+name = 'VASP'
+version = '6.4.2'
+
+homepage = 'http://www.vasp.at'
+description = """The Vienna Ab initio Simulation Package (VASP) is a computer program for atomic scale
+materials modelling, e.g. electronic structure calculations and quantum-mechanical molecular dynamics,
+based on Density Futional Theory (DFT). In this version VASPsol (https://github.com/henniggroup/VASPsol)
+and scripts and modules for calculating transition states, VTSTTools (http://theory.cm.utexas.edu/vtsttools/)
+has been implemented to the original version of vasp This version of vasp also supports 
+HDF5, Wannier90, Libbeef, Libxc, and DFTD4."""
+
+toolchain = {'name': 'foss', 'version': '2022b'}
+dependencies = [
+    ('HDF5', '1.14.0'),
+]
+
+group = ("sw_vasp","You must be a member of a group licensed to use VASP. Contact hpc@njit.edu for assistance")
+
+source_urls = ['https://github.com/henniggroup/VASPsol/archive/', 'http://theory.cm.utexas.edu/code/vtstscripts_old', 'http://theory.cm.utexas.edu/code/']
+sources = ['%(namelower)s.%(version)s.tgz']
+patches = ['%(namelower)s-6.4.1-foss.patch']
+checksums = [
+    {'vasp.6.4.2.tgz': 'b704637f7384673f91adfbc803edc5cc7fe736d9623453461f7cdc29b123410e'},
+    {'vasp-6.4.1-foss.patch': '5e92b39101f87c0ac214f6550f33982735733e2ad0a5892ee3647ffc2dfb643a'},
+]
+
+# Vasp is proprietary software, see http://www.vasp.at/index.php/faqs on how to get access to the code
+prebuildopts = 'cp arch/makefile.include.gnu_omp ./makefile.include && '
+prebuildopts += 'unset LIBS && '
+
+#configopts += "-Dcustom_libraries='flexiblas' "
+
+parallel = 1
+
+#files_to_copy = [(['bin/vasp_std', 'bin/vasp_gam', 'bin/vasp_ncl'], 'bin'), (['src/lib/*'], 'lib')]
+
+files_to_copy = ["bin", (['src/lib/*'], 'lib'), (['src/fftlib/*'], 'fftlib'), (['src/parser/*'], 'parser')]
+
+sanity_check_paths = {
+    'files': ['bin/vasp_std', 'bin/vasp_gam', 'bin/vasp_ncl'], 
+    'dirs': ['lib', 'fftlib']
+}
+
+
+moduleclass = 'phys'

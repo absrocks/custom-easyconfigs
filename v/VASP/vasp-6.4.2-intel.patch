@@ -1,0 +1,29 @@
+-- vasp.6.4.2/arch/makefile.include.intel.orig	2023-11-21 14:21:42.058381000 -0500
++++ vasp.6.4.2/arch/makefile.include.intel	2023-11-21 13:34:04.354404556 -0500
+@@ -48,21 +48,21 @@
+ 
+ # When compiling on the target machine itself, change this to the
+ # relevant target when cross-compiling for another architecture
+-VASP_TARGET_CPU ?= -xHOST
++VASP_TARGET_CPU ?= -march=core-avx2
+ FFLAGS     += $(VASP_TARGET_CPU)
+ 
+ # Intel MKL (FFTW, BLAS, LAPACK, and scaLAPACK)
+ # (Note: for Intel Parallel Studio's MKL use -mkl instead of -qmkl)
+ FCL        += -qmkl=sequential
+-MKLROOT    ?= /path/to/your/mkl/installation
++#MKLROOT    ?= /path/to/your/mkl/installation
+ LLIBS      += -L$(MKLROOT)/lib/intel64 -lmkl_scalapack_lp64 -lmkl_blacs_intelmpi_lp64
+ INCS        =-I$(MKLROOT)/include/fftw
+ 
+ # HDF5-support (optional but strongly recommended)
+-#CPP_OPTIONS+= -DVASP_HDF5
++CPP_OPTIONS+= -DVASP_HDF5
+ #HDF5_ROOT  ?= /path/to/your/hdf5/installation
+-#LLIBS      += -L$(HDF5_ROOT)/lib -lhdf5_fortran
+-#INCS       += -I$(HDF5_ROOT)/include
++LLIBS      += -lhdf5_fortran
++INCS       += -I$(EBROOTHDF5)/include
+ 
+ # For the VASP-2-Wannier90 interface (optional)
+ #CPP_OPTIONS    += -DVASP2WANNIER90

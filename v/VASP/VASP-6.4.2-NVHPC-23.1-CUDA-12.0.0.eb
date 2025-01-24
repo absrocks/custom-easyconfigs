@@ -1,0 +1,49 @@
+easyblock = 'MakeCp'
+
+name = 'VASP'
+version = '6.4.2'
+
+
+homepage = 'http://www.vasp.at'
+description = """The Vienna Ab initio Simulation Package (VASP) is a computer program for atomic scale
+materials modelling, e.g. electronic structure calculations and quantum-mechanical molecular dynamics,
+based on Density Futional Theory (DFT). In this version VASPsol (https://github.com/henniggroup/VASPsol)
+and scripts and modules for calculating transition states, VTSTTools (http://theory.cm.utexas.edu/vtsttools/)
+has been implemented to the original version of vasp This version of vasp also supports 
+HDF5, Wannier90, Libbeef, Libxc, and DFTD4."""
+
+toolchain = {'name': 'NVHPC', 'version': '23.1-CUDA-12.0.0'}
+toolchainopts = {'openmp': True}
+
+dependencies = [
+    ('FFTW', '3.3.10'),
+]
+
+#group = ("sw_vasp","You must be a member of a group licensed to use VASP. Contact hpc@njit.edu for assistance")
+
+sources = ['%(namelower)s.%(version)s.tgz']
+
+checksums = [
+    {'vasp.6.4.2.tgz': 'b704637f7384673f91adfbc803edc5cc7fe736d9623453461f7cdc29b123410e'},
+]
+
+# Vasp is proprietary software, see http://www.vasp.at/index.php/faqs on how to get access to the code
+prebuildopts = 'cp arch/makefile.include.nvhpc_omp_acc ./makefile.include && '
+prebuildopts += 'unset LIBS && '
+
+local_targets = ['std', 'gam', 'ncl']
+
+buildopts = '%s ' % ' '.join(local_targets)
+buildopts += 'FFTW_ROOT="${EBROOTFFTW}" '
+buildopts += 'DEPS=1 '  # required for VASP parallel builds
+
+
+files_to_copy = [(['bin/vasp_' + x for x in local_targets], 'bin')]
+
+sanity_check_paths = {
+    'files': ['bin/vasp_' + x for x in local_targets],
+    'dirs': []
+}
+
+
+moduleclass = 'phys'

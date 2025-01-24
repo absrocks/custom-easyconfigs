@@ -1,0 +1,38 @@
+--- vasp.6.4.1/arch/makefile.include.gnu_omp.orig	2023-04-04 06:05:15.000000000 -0400
++++ vasp.6.4.1/arch/makefile.include.gnu_omp	2023-05-05 22:49:41.075258000 -0400
+@@ -56,25 +56,25 @@
+ FFLAGS     += -fallow-argument-mismatch
+ 
+ # BLAS and LAPACK (mandatory)
+-OPENBLAS_ROOT ?= /path/to/your/openblas/installation
+-BLASPACK    = -L$(OPENBLAS_ROOT)/lib -lopenblas
++#OPENBLAS_ROOT ?= /path/to/your/openblas/installation
++BLASPACK    = -lflexiblas
+ 
+ # scaLAPACK (mandatory)
+-SCALAPACK_ROOT ?= /path/to/your/scalapack/installation
+-SCALAPACK   = -L$(SCALAPACK_ROOT)/lib -lscalapack
++#SCALAPACK_ROOT ?= /path/to/your/scalapack/installation
++SCALAPACK   = -lscalapack
+ 
+ LLIBS      += $(SCALAPACK) $(BLASPACK)
+ 
+ # FFTW (mandatory)
+-FFTW_ROOT  ?= /path/to/your/fftw/installation
+-LLIBS      += -L$(FFTW_ROOT)/lib -lfftw3 -lfftw3_omp
+-INCS       += -I$(FFTW_ROOT)/include
++#FFTW_ROOT  ?= /path/to/your/fftw/installation
++LLIBS      += -lfftw3 -lfftw3_omp
++INCS       += -I$(EBROOTFFTW)/include
+ 
+ # HDF5-support (optional but strongly recommended)
+-#CPP_OPTIONS+= -DVASP_HDF5
++CPP_OPTIONS+= -DVASP_HDF5
+ #HDF5_ROOT  ?= /path/to/your/hdf5/installation
+-#LLIBS      += -L$(HDF5_ROOT)/lib -lhdf5_fortran
+-#INCS       += -I$(HDF5_ROOT)/include
++LLIBS      += -lhdf5_fortran
++INCS       += -I$(HDF5_DIR)/include
+ 
+ # For the VASP-2-Wannier90 interface (optional)
+ #CPP_OPTIONS    += -DVASP2WANNIER90
