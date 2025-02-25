@@ -1,0 +1,39 @@
+easyblock = 'CMakeMakeCp'
+
+name = 'SCR'
+version = '3.1.0'
+
+homepage = 'https://scr.readthedocs.io/'
+description = """The Scalable Checkpoint / Restart (SCR) library enables MPI applications to utilize distributed storage on Linux clusters to attain high file I/O bandwidth for checkpointing, restarting, and writing large datasets."""
+
+toolchain = {'name': 'foss', 'version': '2022b'}
+toolchainopts = {'pic': True}
+
+source_urls = ['https://github.com/LLNL/scr/archive/refs/tags']
+sources = ['v%(version)s.tar.gz']
+checksums = ['ca1f37c84e0ff7a307e68f213c8cc868974d7fb30f16826853a711c7c3a55ffa']
+
+builddependencies = [('CMake', '3.24.3')]
+
+separate_build_dir = False
+
+
+preconfigopts = "sh bootstrap.sh && "
+configopts  = "-DCMAKE_INSTALL_PREFIX=%(builddir)s/%(namelower)s-%(version)s/install && make install "
+
+
+files_to_copy = [
+    (['install/bin/*'], 'bin'),
+    (['install/include/*'], 'include'),
+    ('install/lib'),
+    ('install/lib64'),
+    ('install/share'),
+    ('install/libexec'),
+]
+
+sanity_check_paths = {
+    'files':['bin/scr_halt', 'bin/kvtree_print'],
+    'dirs': ['include', 'lib', 'share'],
+}
+
+moduleclass = 'cae'
