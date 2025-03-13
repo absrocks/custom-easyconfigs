@@ -1,0 +1,27 @@
+easyblock = 'Binary'
+
+name = 'tecplot'
+version = '2024'
+
+homepage = 'http://www.tecplot.com/products/tecplot-360/'
+description = """Quickly plot and animate your CFD results exactly the way you want. Analyze complex solutions,
+arrange multiple layouts, and communicate your results with professional images and animations."""
+
+toolchain = SYSTEM
+modextrapaths = {
+'PATH': '360ex_2024r1/bin',
+'PATH': 'chorus_2024r1/bin',
+}
+
+# fi. http://www.tecplot.com/my/product-releases/
+#tecplot360ex2024r1_linux64
+local_installername = '%(name)s360ex%(version)sr1_linux64.sh'
+sources = [local_installername]
+
+sanity_check_paths = {
+    'files': ['360ex_2024r1/bin/tec360'],
+    'dirs': ['360ex_2024r1', 'chorus_2024r1']
+}
+install_cmd = 'chmod +x %s && ./%s --skip-license --prefix=%%(installdir)s' % (local_installername, local_installername)
+
+moduleclass = 'vis'
