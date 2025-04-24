@@ -1,0 +1,32 @@
+# Based on https://code.it4i.cz/sccs/easyconfigs-it4i/-/blob/it4i-karolina/v/VESTA/VESTA-3.5.7.eb
+
+easyblock = 'Tarball'
+
+name = 'VESTA'
+version = '3.90.8'
+versionsuffix = '-gtk3'
+
+homepage = "http://www.jp-minerals.org/vesta"
+description = """
+  VESTA is a 3D visualization program for structured models, 
+  volumetric data such as electron/nuclear densities, 
+  and crystal morphologies.
+"""
+
+toolchain = SYSTEM
+
+source_urls = ["http://www.jp-minerals.org/vesta/archives/testing"]
+sources = [{
+    'filename': SOURCE_TAR_BZ2,
+    'download_filename': '%(name)s-gtk3-x86_64.tar.bz2',
+}]
+checksums = ['eee36b25f803bcdf5c624a4ed645371de548c75173306621eadfcbdd453d4778']
+
+sanity_check_paths = {
+    'files': ['VESTA'],
+    'dirs': [],
+}
+
+modextrapaths = {'PATH': ''}
+
+moduleclass = 'vis'
