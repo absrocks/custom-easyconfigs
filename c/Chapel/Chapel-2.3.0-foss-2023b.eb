@@ -23,22 +23,24 @@ builddependencies = [
 ]
 
 dependencies = [
-    ('GMP', '6.3.0'),
     ('Python', '3.11.5'),
     ('ncurses', '6.4'),
 ]
 
 preconfigopts = 'export %s &&' % ' '.join([
-    'CHPL_LLVM=none',
+    'CHPL_LLVM=bundled',
+    'CHPL_TARGET_COMPILER=llvm',
     'CHPL_HWLOC=system',
-    'CHPL_GMP=system',
-
+    'CHPL_GMP=bundled',
+    'CHPL_RE2=bundled',
+    'CHPL_TARGET_CPU=native ',
     'CHPL_COMM=gasnet',
-    'CHPL_LAUNCHER=gasnetrun_mpi',
-    'CHPL_COMM_SUBSTRATE=mpi',
-
+    'CHPL_LAUNCHER=slurm-gasnetrun_ibv',
+    'CHPL_COMM_SUBSTRATE=ibv',
+    'CHPL_TASKS=qthreads',
     'CHPL_GASNET_SEGMENT=fast',
     'CHPL_GASNET_VERSION=1',
+    'CHPL_TARGET_MEM=jemalloc',
     'THIRD_PARTY_DIR=%(builddir)s/third-party',
 
 ])
@@ -51,16 +53,26 @@ sanity_check_paths = {
     'dirs': ['lib'],
 }
 
-modextrapaths = { 'PYTHONPATH': 'lib/%(namelower)s/2.3/third-party/chpl-venv/install/chpldeps'}
+modextrapaths = {
+    'PATH': ['lib/chapel/2.3/third-party/gasnet/install/linux64-x86_64-native-llvm-none/substrate-ibv/seg-fast/bin', 'share/chapel/2.3/util', 'lib/chapel/2.3/third-party/llvm/install/linux64-x86_64/bin'],
+    'LIBRARY_PATH': ['chapel/2.3/third-party/gasnet/install/linux64-x86_64-native-llvm-none/substrate-ibv/seg-fast/lib', 'lib/chapel/2.3/third-party/llvm/install/linux64-x86_64/lib', 'lib/chapel/2.3/third-party/qthread/install/linux64-x86_64-native-llvm-none-flat-jemalloc-system/lib', 'lib/chapel/2.3/third-party/re2/install/linux64-x86_64-native-llvm-none/lib'],
+}
+
+
 
 modluafooter = """
 setenv("CHPL_COMM", "gasnet")
-setenv("CHPL_LAUNCHER", "gasnetrun_mpi")
-setenv("CHPL_COMM_SUBSTRATE", "mpi")
+setenv("CHPL_LAUNCHER", "slurm-gasnetrun_ibv")
+setenv("CHPL_COMM_SUBSTRATE", "ibv")
 setenv("CHPL_GASNET_SEGMENT", "fast")
-setenv("CHPL_GMP", "system")
+setenv("CHPL_GMP", "bundled")
 setenv("CHPL_HWLOC", "system")
 setenv("CHPL_GASNET_VERSION", "1")
-setenv("CHPL_LLVM", "none")
+setenv("export GASNET_PHYSMEM_MAX", "0.9")
+setenv("CHPL_LLVM", "bundled")
+setenv("CHPL_TARGET_COMPILER", "llvm")
+setenv("CHPL_TARGET_MEM", "jemalloc")
+setenv("CHPL_RE2", "bundled")
 """
+
 moduleclass = 'lang'
