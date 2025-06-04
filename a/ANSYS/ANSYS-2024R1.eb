@@ -1,0 +1,23 @@
+name = 'ANSYS'
+version = '2024R1'
+
+homepage = 'http://www.ansys.com'
+description = """ANSYS simulation software enables organizations to confidently predict
+    how their products will operate in the real world. We believe that every product is
+    a promise of something greater. """
+
+toolchain = {'name': 'GCCcore', 'version': '13.2.0'}
+
+# create a zip file from the 3 install iso files.
+# make sure all files of the iso's are in the same directory.
+sources = ['ANSYS%(version)s_LINX64.tar.gz']
+checksums = ['1124f0823447b5d45c9344c76d34107b215cf72a9111af5b115914bee8bf4aea']
+
+dependencies = [
+    ('X11', '20231019'),
+]
+
+#installopts = "-usetempdir /home/userapps/TEMP"
+
+installopts = "-usetempdir /home/am2455/TEMP"
+moduleclass = 'tools'
