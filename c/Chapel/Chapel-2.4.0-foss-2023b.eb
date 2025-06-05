@@ -1,0 +1,78 @@
+easyblock = 'ConfigureMake'
+
+name = 'Chapel'
+version = '2.4.0'
+shortver = '2.4'
+
+homepage = 'https://chapel-lang.org/'
+
+description = """
+ Chapel is a programming language designed for productive parallel computing at scale.
+"""
+
+toolchain = {'name': 'foss', 'version': '2023b'}
+toolchainopts = {'pic': True}
+
+
+source_urls = ['https://github.com/chapel-lang/chapel/archive/refs/tags']
+sources = ['%(version)s.tar.gz']
+checksums = ['68929818805fe4ccb0846d17cc449312b4f594b234d979b65e70924b254f2342']
+
+builddependencies = [
+    ('CMake', '3.27.6'),
+]
+
+dependencies = [
+    ('Python', '3.11.5'),
+    ('ncurses', '6.4'),
+]
+
+preconfigopts = 'export %s &&' % ' '.join([
+    'CHPL_LLVM=bundled',
+    'CHPL_TARGET_COMPILER=llvm',
+    'CHPL_HWLOC=system',
+    'CHPL_GMP=bundled',
+    'CHPL_RE2=bundled',
+    'CHPL_TARGET_CPU=native ',
+    'CHPL_COMM=gasnet',
+    'CHPL_LAUNCHER=slurm-gasnetrun_ibv',
+    'CHPL_COMM_SUBSTRATE=ibv',
+    'CHPL_TASKS=qthreads',
+    'CHPL_GASNET_SEGMENT=fast',
+    'CHPL_GASNET_VERSION=1',
+    'CHPL_TARGET_MEM=jemalloc',
+    'THIRD_PARTY_DIR=%(builddir)s/third-party',
+
+])
+
+prebuildopts = preconfigopts
+preinstallopts = prebuildopts
+
+sanity_check_paths = {
+    'files': ['bin/chpl'],
+    'dirs': ['lib'],
+}
+
+modextrapaths = {
+    'PATH': ['lib/chapel/2.4/third-party/gasnet/install/linux64-x86_64-native-llvm-none/substrate-ibv/seg-fast/bin', 'share/chapel/2.4/util', 'lib/chapel/2.4/third-party/llvm/install/linux64-x86_64/bin'],
+    'LIBRARY_PATH': ['chapel/2.4/third-party/gasnet/install/linux64-x86_64-native-llvm-none/substrate-ibv/seg-fast/lib', 'lib/chapel/2.4/third-party/llvm/install/linux64-x86_64/lib', 'lib/chapel/2.4/third-party/qthread/install/linux64-x86_64-native-llvm-none-flat-jemalloc-system/lib', 'lib/chapel/2.4/third-party/re2/install/linux64-x86_64-native-llvm-none/lib'],
+}
+
+
+
+modluafooter = """
+setenv("CHPL_COMM", "gasnet")
+setenv("CHPL_LAUNCHER", "slurm-gasnetrun_ibv")
+setenv("CHPL_COMM_SUBSTRATE", "ibv")
+setenv("CHPL_GASNET_SEGMENT", "fast")
+setenv("CHPL_GMP", "bundled")
+setenv("CHPL_HWLOC", "system")
+setenv("CHPL_GASNET_VERSION", "1")
+setenv("export GASNET_PHYSMEM_MAX", "0.9")
+setenv("CHPL_LLVM", "bundled")
+setenv("CHPL_TARGET_COMPILER", "llvm")
+setenv("CHPL_TARGET_MEM", "jemalloc")
+setenv("CHPL_RE2", "bundled")
+"""
+
+moduleclass = 'lang'
