@@ -1,0 +1,48 @@
+easyblock = 'ConfigureMake'
+
+name = 'spirit'
+version = '2.2.0'
+
+homepage = 'https://spirit-docs.readthedocs.io/'
+
+description = """
+ Spirit is a platform-independent framework for spin dynamics. 
+ It combines the traditional cluster work, using the command-line, with modern visualisation capabilities in order to maximize scientists’ productivity.
+"""
+
+toolchain = {'name': 'foss', 'version': '2024a'}
+toolchainopts = {'pic': True}
+
+
+source_urls = ['https://github.com/spirit-code/spirit/archive/refs/tags']
+sources = ['v%(version)s.tar.gz']
+checksums = ['68929818805fe4ccb0846d17cc449312b4f594b234d979b65e70924b254f2342']
+
+builddependencies = [
+    ('pkgconf', '2.2.0'),
+    ('CMake', '3.29.3'),
+]
+
+dependencies = [
+    ('Python', '3.12.3'),
+    ('Qt5', '5.15.16'),
+]
+
+preconfigopts = 'cmake -DSPIRIT_USE_OPENMP=ON'
+
+
+prebuildopts = preconfigopts
+preinstallopts = prebuildopts
+
+sanity_check_paths = {
+    'files': ['bin/spirit'],
+    'dirs': ['lib', 'python'],
+}
+
+modextrapaths = {
+    'PYTHONPATH': ['python'],
+}
+
+
+
+moduleclass = 'phys'
